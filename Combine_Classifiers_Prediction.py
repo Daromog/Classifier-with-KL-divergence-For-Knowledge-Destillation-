@@ -6,14 +6,20 @@ from transformers import TrainingArguments, Trainer, AutoTokenizer
 import numpy as np
 import torch
 
-data_files = {"train": "/gaueko0/users/dromero012/Fine-Tuning_Tests/Version_1/Experiments/B77/Data_for_Destilation_Classifier.json"}
+#REPLACE WITH YOUR PATH...........
+scores_json_file = 
+
+#PRETRAINED LANGUAGE MODEL...........
+pretrained_model="albert-xxlarge-v2"
+
+data_files = {"train": scores_json_file}
 
 dataset = load_dataset("json",data_files=data_files)
 print(dataset)
 print("")
 print(dataset["train"][30])
 
-tokenizer = AutoTokenizer.from_pretrained("albert-xxlarge-v2")
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model)
 
 def tokenize_function(examples):
     return tokenizer(examples["sentence"],truncation=True)
@@ -27,7 +33,7 @@ print(tokenized_dataset)
 print("")
 
 
-model = AlbertForSequenceClassification.from_pretrained("albert-xxlarge-v2",
+model = AlbertForSequenceClassification.from_pretrained(pretrained_model,
                                                         num_labels=77,
                                                         ignore_mismatched_sizes=True)
 
